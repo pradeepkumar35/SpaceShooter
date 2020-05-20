@@ -222,6 +222,7 @@ def main():
             enemy.draw(screen)
         player.draw(screen)
         screen.blit(plaYerImg, (10, 5))
+        screen.blit(level_label, (width-100,5))
 
 
         if lost:
