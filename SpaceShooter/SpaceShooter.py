@@ -112,12 +112,18 @@ class Player(Ship):
         self.lost = False
         self.lost_count = 0
         self.FPS = 30
+    
+    def score(self):
+       self.score_value += 1
+    
+    def collsound(self):
+       lcollisonsound = mixer.Sound("explosion.wav")
+       lcollisonsound.play()
 
     def coll(self):
         self.lives -= 1
         self.health -= 10
-        lcollisonsound = mixer.Sound("explosion.wav")
-        lcollisonsound.play()
+        
 
     def move_lasers(self, vel, objs):
         self.cooldown()
@@ -128,6 +134,7 @@ class Player(Ship):
             else:
                 for obj in objs:
                     if laser.collision(obj):
+                        self.score_value += 1
                         objs.remove(obj)
                         lcollisonsound = mixer.Sound("explosion.wav")
                         lcollisonsound.play()
@@ -142,6 +149,8 @@ class Player(Ship):
         pygame.draw.rect(window, (255, 0, 0),[50,20,150,10])
         pygame.draw.rect(window,(0,255,100),(50,20,150*(self.health / self.max_health),10))
         self.lives_label = self.font.render("LIVES :" + str(self.lives), True, (255, 255, 200))
+        self.score_label = self.Font.render("SCORE :" + str(self.score_value), 1, (255, 255, 200))
+        screen.blit(self.score_label, (width - 130, 40))
         if self.lives <= 0:
             lost_label = self.font.render("GAME OVER !!", True, (255, 0, 0))
             screen.blit(lost_label, (width / 2 - lost_label.get_width() / 2, height / 2 - lost_label.get_height() / 2))
@@ -273,6 +282,8 @@ def main():
                 enemy.shoot()
             if collide(enemy, player):
                 Player.coll(player)
+                Player.score(player)
+                Player.collsound(player)
                 enemies.remove(enemy)
 
             elif enemy.y + enemy.get_height() > height:
