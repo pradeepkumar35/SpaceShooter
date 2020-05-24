@@ -109,9 +109,11 @@ class Player(Ship):
         self.max_health = 100
         self.lives = 10
         self.font = pygame.font.SysFont("impact", 50)
+        self.Font = pygame.font.SysFont("imapact",30)
         self.lost = False
         self.lost_count = 0
         self.FPS = 30
+        self.score_value = 0
     
     def score(self):
        self.score_value += 1
